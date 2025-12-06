@@ -1,11 +1,13 @@
-A windows privesc from simple user to full domain compromise using KrbRelayUp, S4U2self and Rubeus
+## KrbRelayUp, PKINIT, S4USelf, Rubeus privesc !!
+
+A windows privesc from a simple user to full domain compromise using KrbRelayUp, S4U2self and Rubeus
 
 
 ## Initial Setup
 The DC IP is 192.168.10.10 (DC1.lab.local)
 the client windows IP is 192.168.10.12 (Win11E.lab.local)
 
-I have working creds for john and a powershell session, adcs is configured on the dc so I can see if its vulnerable to KrbRelayUp or even basics ESC1-8 vulnerabilies
+I have working creds for john which is a normal user without any dangerous rights or privilege. He has a powershell session and adcs is configured on the dc so I can see if its vulnerable to KrbRelayUp or even basics ESC1-8 vulnerabilies.
 
 .\KrbRelayUp.exe relay -d lab.local -dc DC1.lab.local -m adcs
 
@@ -34,7 +36,7 @@ INFO:minikerberos:Saved TGT to file
 
 ```
 
-I can then use this TGT to perform a S4U2self impersonnating the local Administrator:
+I can then use this TGT to perform a **S4U2self** impersonnating the local Administrator:
 
 ```bash
 #exporting the tickets as a environment variables
@@ -168,7 +170,7 @@ C:\Windows\system32>
 
 ```
 
-We are now Domain Admins !!!!
+We are now **Domain Admins** !!!!
 
 ![Domains Admins](Rubeus.png)
 
